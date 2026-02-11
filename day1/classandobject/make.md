@@ -51,7 +51,8 @@ print(f"Dog 1: {dog1}")
 print(f"Dog 2: {dog2}")
 print(f"Dog 3: {dog3}")
 print(f"Are they the same? {dog1 is dog2}")  # False - different objects!
-print()`
+print()
+`
 
 # ============================================================
 # PART 3: ADDING ATTRIBUTES
