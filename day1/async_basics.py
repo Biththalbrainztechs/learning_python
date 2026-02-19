@@ -5,7 +5,7 @@ import asyncio
 async def fetch_data(name,delay):
     """simulates fetching data from api"""
     print(f"[{name}] Starting to fetch data.....")
-    await asyncio.sleep(delay)#simulating network delay
+    await asyncio.sleep(delay)     #simulating network delay
     print(f"[{name}] data received.....")
     return f"data from {name}"
 
