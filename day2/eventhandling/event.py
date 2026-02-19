@@ -79,12 +79,23 @@ def on_message(data:dict):
     timestamp = datetime.now().strftime("%H:%M:%S")
     print(f"[{timestamp}] {data['sender']}:{data['message']}" )
 
+def on_wave_hi(data:dict):
+    """ Handle video hi"""
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    print(f"[{timestamp}] {data['user']} {data['action']}" )
+
+
 async def on_audio_track(data:dict):
     """ Handle audio track events"""
     timestamp = datetime.now().strftime("%H:%M:%S")
     action = "started" if data['enabled'] else "stopped"
-    print(f"[{timestamp}] {data["user"]}{action} speaking")
+    print(f"[{timestamp}] {data['user']} {action} speaking")
 
+async def on_video_track(data:dict):
+    """ Handles video tracks"""
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    action = "turned on" if data['enabled']else "turned of"
+    print(f"[{timestamp}] {data['user']} {action} video")
 
 
 async def main():
@@ -99,6 +110,8 @@ async def main():
     emitter.on('user_left',on_user_left)
     emitter.on('message',on_message)
     emitter.on('audio_track',on_audio_track)
+    emitter.on('video_track',on_video_track)
+    emitter.on('on_wave_hi',on_wave_hi)
 
     print('\n 2 Simulating Room Events .......')
 
@@ -109,6 +122,16 @@ async def main():
         'sender':'Alice',
         'message':'Hey everyone!'
     })
+    await emitter.emit ('video_track',{
+        'user':"Alice",
+        'enabled':True
+    })
+
+    await emitter.emit('on_wave_hi',{
+        'user':'Alice',
+        'action':'waved hi!'
+    })
+   
 
     await emitter.emit('audio_track',{
         'user':'Alice',
@@ -126,7 +149,10 @@ async def main():
 
     })
 
+
     await emitter.emit("user_left",{'name':'Bob','id':'002'})
+
+    
 
 
     print("\n" + "=" * 60)
